@@ -1,29 +1,31 @@
 #include "taskAdc.h"
 
-static const char *TAG = "ADC";
+uint16_t adcData[SAMPLE];
 
-static void task_adc(){
-     int x;
-    uint16_t adc_data[100];
+void getAdcRead(){
+    if (ESP_OK == adc_read(&adcData[FIRST])) {
+        ESP_LOGI("ADC", "adc read: %d\r\n", adcData[FIRST]);
+    }
+}
 
-    while (1) {
-        if (ESP_OK == adc_read(&adc_data[0])) {
-            ESP_LOGI(TAG, "adc read: %d\r\n", adc_data[0]);
+void getFastAdcRead(){
+    ESP_LOGI("ADC", "adc read fast:\r\n");
+    if (ESP_OK == adc_read_fast(adcData, SAMPLE)) {
+        for (uint8_t i = 0; i < SAMPLE; i++) {
+            printf("%d\n", adcData[i]);
         }
+    }
+}
 
-        ESP_LOGI(TAG, "adc read fast:\r\n");
-
-        if (ESP_OK == adc_read_fast(adc_data, 100)) {
-            for (x = 0; x < 100; x++) {
-                printf("%d\n", adc_data[x]);
-            }
-        }
-
+static void adcRoutine(){
+    while (true) {
+        getAdcRead();
+        getFastAdcRead();
         vTaskDelay(1000 / portTICK_RATE_MS);
     }
 }
 
-void configAdcTask(){
+void registerAdcTask(){
     adc_config_t adc_config;
 
     // Depend on menuconfig->Component config->PHY->vdd33_const value
@@ -31,5 +33,5 @@ void configAdcTask(){
     adc_config.mode = ADC_READ_TOUT_MODE;
     adc_config.clk_div = 8; // ADC sample collection clock = 80MHz/clk_div = 10MHz
     ESP_ERROR_CHECK(adc_init(&adc_config));
-    xTaskCreate(task_adc, "task_adc", 1024, NULL, 5, NULL);
+    xTaskCreate(adcRoutine, "adcRoutine", 1024, NULL, 5, NULL);
 }

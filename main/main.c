@@ -7,9 +7,16 @@
 #include "esp_log.h"
 #include "taskAdc.h"
 
-void app_main()
-{
-     /* Print chip information */
+void chipInfo();
+
+void app_main(){
+        chipInfo();
+        ESP_LOGI("TASK", "Initialize adc task\r\n");
+        registerAdcTask();
+}
+
+void chipInfo(){
+  /* Print chip information */
     esp_chip_info_t chip_info;
     esp_chip_info(&chip_info);
     printf("This is ESP8266 chip with %d CPU cores, WiFi, ",
@@ -19,10 +26,6 @@ void app_main()
 
     printf("%dMB %s flash\n", spi_flash_get_chip_size() / (1024 * 1024),
             (chip_info.features & CHIP_FEATURE_EMB_FLASH) ? "embedded" : "external");
-    
-    ESP_LOGI("TASK", "Initialize adc task\r\n");
+
     vTaskDelay(5000 / portTICK_RATE_MS);
-
-    configAdcTask();
 }
-
