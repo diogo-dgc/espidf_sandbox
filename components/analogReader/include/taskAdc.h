@@ -12,8 +12,12 @@
 #include "driver/adc.h"
 #include "esp_log.h"
 
-void configAdcTask();
-static void task_adc();
+#define SAMPLE 100
+#define FIRST 0
 
+void getAdcRead();
+void getFastAdcRead();
+void registerAdcTask();
+static void adcRoutine();
 
 #endif
