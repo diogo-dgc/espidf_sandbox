@@ -7,15 +7,17 @@
 #include "esp_log.h"
 #include "taskAdc.h"
 #include "blinkLed.h"
+#include "wifiStationTask.h"
 
 void chipInfo();
 
 void app_main(){
         chipInfo();
-        ESP_LOGI("TASK", "Initialize adc task\r\n");
-        registerAdcTask();
-        ESP_LOGI("TASK", "Initialize LED task\r\n");
-        registerLedTask();
+        registerWifiTask();
+        // ESP_LOGI("TASK", "Initialize adc task\r\n");
+        // registerAdcTask();
+        // ESP_LOGI("TASK", "Initialize LED task\r\n");
+        // registerLedTask();
 }
 
 void chipInfo(){

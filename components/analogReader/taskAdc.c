@@ -20,7 +20,7 @@ void getFastAdcRead(){
 static void adcRoutine(){
     while (true) {
         getAdcRead();
-        getFastAdcRead();
+        //getFastAdcRead();
         vTaskDelay(1000 / portTICK_RATE_MS);
     }
 }
