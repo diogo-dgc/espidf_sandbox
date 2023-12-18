@@ -6,6 +6,7 @@
 #include "esp_spi_flash.h"
 #include "esp_log.h"
 #include "taskAdc.h"
+#include "blinkLed.h"
 
 void chipInfo();
 
@@ -13,6 +14,8 @@ void app_main(){
         chipInfo();
         ESP_LOGI("TASK", "Initialize adc task\r\n");
         registerAdcTask();
+        ESP_LOGI("TASK", "Initialize LED task\r\n");
+        registerLedTask();
 }
 
 void chipInfo(){
